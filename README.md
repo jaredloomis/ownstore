@@ -3,7 +3,7 @@
 OwnStore provides a consistent abstraction
 across all data storage mediums and services. These services can be anything,
 from local filesystem, to AWS S3, to IPFS, etc. This gives the
-end user complete control over their own data. A complete OwnStore
+*end user* complete control over their **own data**. A complete OwnStore
 "installation" consists of a single configuration file, describing all your
 data storage locations. Applications use the OwnStore library to
 securely retrieve data from the services specified.
