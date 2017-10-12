@@ -19,7 +19,7 @@ data BlobHeader = BlobHeader {
 -- | Representation of cryptographic ciphers
 data Cipher =
     AES | TwoFish | TripleDES |
-    MultiCipher [Encryption] | NoCipher
+    MultiCipher [Cipher] | NoCipher
   deriving (Show, Eq)
 
 -- | A BlobID identifies blobs
