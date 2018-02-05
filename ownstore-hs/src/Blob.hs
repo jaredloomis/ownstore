@@ -1,14 +1,13 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Blob where
 
+import qualified Data.Text as T
 import GHC.Generics (Generic)
 import Data.Word (Word8)
 import System.Random (randomIO)
 import Data.Binary (Binary(..))
 import Data.Binary.Get (Get)
 import Data.Aeson (ToJSON, FromJSON)
-
--- TODO: don't use String, obvi
 
 -- | A Blob is the basic unit of storage in OwnStore.
 --   A header with some data
@@ -30,7 +29,7 @@ instance Binary Blob where
         body   <- get :: Get BlobBody
         return $ Blob header body
 
-type BlobBody = String
+type BlobBody = T.Text
 
 -- | The BlobHeader contains all metadata about the blob
 data BlobHeader = BlobHeader {
@@ -76,11 +75,11 @@ instance Binary Cipher where
                 
 
 -- | A BlobID identifies blobs
-type BlobID = String
+type BlobID = T.Text
 
 -- | A BlobKey is a key used to decode an encrypted blob
-type BlobSecret = String
+type BlobSecret = T.Text
 
 -- | Create a random BlobID
 randomBlobID :: IO BlobID
-randomBlobID = show <$> (randomIO :: IO Int)
+randomBlobID = T.pack . show <$> (randomIO :: IO Int)
