@@ -1,13 +1,14 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Blob where
 
-import qualified Data.Text as T
 import GHC.Generics (Generic)
 import Data.Word (Word8)
 import System.Random (randomIO)
 import Data.Binary (Binary(..))
 import Data.Binary.Get (Get)
 import Data.Aeson (ToJSON, FromJSON)
+
+import qualified Data.Text as T
 
 -- | A Blob is the basic unit of storage in OwnStore.
 --   A header with some data

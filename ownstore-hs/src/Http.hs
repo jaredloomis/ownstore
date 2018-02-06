@@ -1,31 +1,35 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE DataKinds         #-}
+{-# LANGUAGE TypeOperators     #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Http where
 
 import Servant
 import Network.Wai.Handler.Warp (run)
-import Control.Monad.Trans
 
 import Stor
 import Blob
 import Service.Local
+import Service.S3
 
 type BlobAPI =
       "CreateBlob" :> ReqBody '[JSON] Blob   :> Post '[JSON] BlobID
- :<|> "Blob"       :> QueryParam "id" BlobID :> Get  '[JSON] (Maybe Blob)
+ :<|> "Blob"       :> QueryParam "id" BlobID :> Get  '[JSON] Blob
 
 createBlob :: Blob -> Stor BlobID
-createBlob = localCreate
+createBlob = s3Create
 
-getBlob :: Maybe BlobID -> Stor (Maybe Blob)
-getBlob (Just key) = fmap Just $ localGet key
-getBlob Nothing    = return Nothing
+getBlob :: Maybe BlobID -> Stor Blob
+getBlob (Just key) = s3Read key
+getBlob Nothing    = throwError $ StorError "Missing param 'id'"
 
 handlers :: ServerT BlobAPI Stor
 handlers = createBlob :<|> getBlob
 
+storConfig :: StorConfig
+storConfig = StorConfig (S3ServiceConfig "ownstore-test")
+
 server :: Server BlobAPI
-server = hoistServer blobAPI liftToHandler handlers
+server = hoistServer blobAPI (liftToHandler storConfig) handlers
 
 blobAPI :: Proxy BlobAPI
 blobAPI = Proxy
