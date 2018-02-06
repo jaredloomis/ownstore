@@ -1,13 +1,24 @@
-# OwnStore (WIP - Design stage)
+# OwnStore
 
 OwnStore provides a consistent abstraction
 across all data storage mediums and services. These services can be anything,
 from local filesystem, to AWS S3, to IPFS, etc. This gives the
 *end user* complete control over their **own data**.
 
+## Development Progress
+
+Todo:
+
+- ~~Skeleton library~~
+- ~~Local file storage service~~
+- ~~HTTP Server / REST API~~
+- S3 storage service (*in progresss*)
+- Generic HTTP storage service template
+- Frontend library
+
 ## Web Integration
 
-My main goal is to ensure the web integration is optimal
+My main goal is to ensure the web integration is optimal.
 
 Users can tell OwnStore-enabled sites to store data wherever user pleases, from
 local, to IPFS, to S3, etc. The website then makes requests directly to services
