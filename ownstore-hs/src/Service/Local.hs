@@ -17,24 +17,24 @@ localService = Service localCreate localGet localUpdate localDelete
 
 localCreate :: Blob -> Stor BlobID
 localCreate blob = do
-    key <- liftIO randomBlobID
-    let fileName = blobDirectory </> T.unpack key
-    liftIO $ do
-        createDirectoryIfMissing True blobDirectory
-        B.writeFile fileName (encode blob)
-    return key
+  key <- liftIO randomBlobID
+  let fileName = blobDirectory </> T.unpack key
+  liftIO $ do
+    createDirectoryIfMissing True blobDirectory
+    B.writeFile fileName (encode blob)
+  return key
 
 localGet :: BlobID -> Stor Blob
 localGet key = do
-    let fileName = blobDirectory </> T.unpack key
-    liftIO $ decode <$> B.readFile fileName
+  let fileName = blobDirectory </> T.unpack key
+  liftIO $ decode <$> B.readFile fileName
 
 localUpdate :: BlobID -> BlobBody -> Stor ()
 localUpdate key body = do
-    let fileName = blobDirectory </> T.unpack key
-    Blob header _ <- localGet key
-    let newBlob = Blob header body
-    liftIO $ B.writeFile fileName (encode newBlob)
+  let fileName = blobDirectory </> T.unpack key
+  Blob header _ <- localGet key
+  let newBlob = Blob header body
+  liftIO $ B.writeFile fileName (encode newBlob)
 
 localDelete :: BlobID -> Stor ()
 localDelete = liftIO . removeFile . (blobDirectory </>) . T.unpack

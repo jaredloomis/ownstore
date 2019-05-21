@@ -2,7 +2,7 @@ module Service where
 
 import Blob
 
--- | A Service is a set of CRUD operations on Blobs
+-- | A Service is a set of operations on Blobs
 data Service f = Service {
     serviceCreate :: Blob               -> f BlobID,
     serviceGet    :: BlobID             -> f Blob,
